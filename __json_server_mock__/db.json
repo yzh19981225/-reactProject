@@ -43,6 +43,20 @@
       "personId":3,
       "organization":"物料组",
       "created":1604989757139
+    },
+    {
+      "id":4,
+      "name":"营配管理",
+      "personId":4,
+      "organization":"营配组",
+      "created":1604989757139
+    },
+    {
+      "id":5,
+      "name":"销售管理",
+      "personId":5,
+      "organization":"销售组",
+      "created":1604989757139
     }
   ]
 }

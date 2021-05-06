@@ -3,7 +3,7 @@ import {User} from "./search-panel";
 
 interface  Project{
     id:string;
-    name:string;
+    name:string;                                              
     personId:string;
     pin:boolean;
     organization:string;

@@ -19,7 +19,7 @@ export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-};
+} 
 //泛形的应用
 export const useDebounce = <v>(value: v, delay?: number) => {
   // 这是一个内部得变量进入这个函数不会马上更新debouncedValue得值；
@@ -35,6 +35,39 @@ export const useDebounce = <v>(value: v, delay?: number) => {
   }, [value, delay]);
   return debouncedValue;
 };
+
+// interface valueData {
+//   value:[]
+
+// }
+// export const useArray = <T> (arr:T[]) => {
+//   // hello，请把作业写在这里吧，写完记得再对照作业要求检查一下
+
+//     const [value , setValue] = useState(arr)
+//     return {
+//       value,
+//       setValue,
+//       add:(item:T)=>{
+//         setValue([...value,item])
+//       },
+//       removeIndex:(index:number)=>{
+//         const Copy = [...value];
+//         Copy.splice(index,1)
+//         setValue(Copy)
+//       },
+//       clear:()=>{
+//         setValue([])
+//       }
+//     }
+
+
+
+  
+
+
+
+// };
+
 // export const useDebounce = (value,delay)=>{
 //     let timeout
 //     return ()=>{

@@ -5,6 +5,7 @@ import React from 'react';
         email:string;
         title:string;
         organization:string;
+        token:string;
 }
 interface SearchPanelProps{
     users : User[],

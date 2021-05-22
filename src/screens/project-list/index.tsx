@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react"
 import { List } from "./list"
 import { SearchPanel } from "screens/project-list/search-panel"
-import React from 'react';
 import {cleanObject} from "utils/index";
-import * as qs from "qs";
 import {useMount} from "utils/index";
 import {useDebounce} from "utils/index";
+import { useHttp } from "utils/http";
 
 
 
-const apiUrl = process.env.REACT_APP_API_URL
+// const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
     const [users, setUsers] = useState([]) //引入hook use
     const [param, setParam] = useState({
@@ -19,19 +18,15 @@ export const ProjectListScreen = () => {
     const debouncedParam = useDebounce(param,2000)
 
     const [list, setList] = useState([])
+    const client = useHttp()
     useEffect(() => {
-        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`).then(async response => {
-            if (response.ok) {
-                setList(await response.json())
-            }
-        })
+        console.log(cleanObject(debouncedParam),"3");
+        
+        client('projects',{data:cleanObject(debouncedParam),method:'GET'}).then(setList)
     }, [debouncedParam])// eslint-disable-line react-hooks/exhaustive-deps
+    //页面加载完渲染
     useMount(() => {
-            fetch(`${apiUrl}/users`).then(async response => {
-                if (response.ok) {
-                    setUsers(await response.json())
-                }
-            })
+        client('users').then(setUsers)
         })
     return <div>
         <SearchPanel users={users} param={param} setParam={setParam} />

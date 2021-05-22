@@ -13,6 +13,7 @@ interface AuthForm{
     password:string
 }
 
+
 AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({children}:{children:ReactNode}) =>{

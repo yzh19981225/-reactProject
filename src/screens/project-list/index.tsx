@@ -22,7 +22,7 @@ export const ProjectListScreen = () => {
     useEffect(() => {
         console.log(cleanObject(debouncedParam),"3");
         
-        client('projects',{data:cleanObject(debouncedParam),method:'GET'}).then(setList)
+        client('projects',{data:cleanObject(debouncedParam)}).then(setList)
     }, [debouncedParam])// eslint-disable-line react-hooks/exhaustive-deps
     //页面加载完渲染
     useMount(() => {

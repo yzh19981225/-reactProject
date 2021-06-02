@@ -38,12 +38,12 @@ export const http = async (
           return data;
       } else{
           return Promise.reject(data)
-      }
+      } 
     });
 };
 
 
 export const useHttp = () =>{
-  const {user} = useAuth();
+  const {user} = useAuth(); 
   return (...[endpoint,config]:Parameters<typeof http>)=>http(endpoint,{...config,token:user?.token})
 }

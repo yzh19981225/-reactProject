@@ -3,7 +3,7 @@ import * as auth from 'auth-provider'
 import { User } from 'screens/project-list/search-panel'
 import { http } from 'utils/http'
 import { useMount } from 'utils'
-const AuthContext = React.createContext <{
+const AuthContext = React.createContext <{ 
     user:User|null,
     login:(from:AuthForm)=>Promise<void>
     register:(from:AuthForm)=>Promise<void>

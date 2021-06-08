@@ -22,19 +22,6 @@ return http('login',{data:data,token:getToken(),method:'POST'}).then(async (resp
                return Promise.reject(data)
             }
         })
-    //    return fetch(`${apiUrl}/login`,{
-//         method:'POST',
-//         headers:{
-//             'Content-Type':'application/json'
-//         },
-//         body:JSON.stringify(data)
-//     }).then(async (response) => {
-//         if (response.ok) {
-//           return  handleUserResponse(await response.json())
-//         }else{
-//            return Promise.reject(data)
-//         }
-//     })
 }
 
 export const register =( data:{username:string,password:string} )=>{

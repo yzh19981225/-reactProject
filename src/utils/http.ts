@@ -45,5 +45,8 @@ export const http = async (
 
 export const useHttp = () =>{
   const {user} = useAuth(); 
+  //utility type 的用法用泛形给他传进来一个其他类型然后utility type进行一些操作 
   return (...[endpoint,config]:Parameters<typeof http>)=>http(endpoint,{...config,token:user?.token})
 }
+
+// type myFavoriteNumber  = string|number  

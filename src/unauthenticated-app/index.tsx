@@ -29,7 +29,7 @@ export const UnauthenticatedApp = () => {
   );
 };
 
-const Aspan = styled.span`
+export const Aspan = styled.span`
   color:rgb(65,105,225);
   cursor:pointer;
 `

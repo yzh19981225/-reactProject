@@ -2,26 +2,29 @@ import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
-
+import {ReactComponent as SoftwareLogo} from "assets/software-logo.svg" 
+import { Dropdown, Menu } from "antd";
+import { Aspan } from "unauthenticated-app";
 export const AnthenticatedApp = () => {
-  const { logout } = useAuth();
+  const { logout ,user} = useAuth();
   return (
     <Container>
       <Header between={true}>
         <HeaderLeft gap={true}>
-          <h3>Logo</h3>
+          <SoftwareLogo width={'18rem'} color={'rgba(38,132,255)'} />
           <h3>项目</h3>
           <h3>用户</h3>
         </HeaderLeft>
         <HeaderRight>
-          
-          <button
-            onClick={() => {
-              logout();
-            }}
-          >
-            登出
-          </button>
+        <Dropdown overlay={<Menu>
+          <Menu.Item key={'logout'}>
+            <span onClick={logout}>登出</span>
+          </Menu.Item>
+        </Menu>}>
+            <Aspan  onClick={e=>e.preventDefault()}>
+              Hi,{user?.name}
+            </Aspan>
+          </Dropdown>          
         </HeaderRight>
       </Header>
       <Main>
@@ -32,6 +35,9 @@ export const AnthenticatedApp = () => {
 };
 
 const Header = styled(Row)`
+padding: 3.2rem;
+box-shadow: 0 0 5px rgba(0,0,0,0.1);
+z-index: 1;
 `;
 const Main = styled.main`
 `;

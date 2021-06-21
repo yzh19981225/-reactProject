@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 //判断是否为空
-export const isFalsy = (value: unknown):boolean =>  { return value === 0 ? true : !!value}
+export const isFalsy = (value: unknown): boolean => {
+  return value === 0 ? true : !!value;
+};
+
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
 //在一个函数里面直接改变传入得对象本身就是不好的因为js对象本身是引用类型
-export const cleanObject = (object: object) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
   Object.keys(object).forEach((key) => {
-    // @ts-ignore
     const value = object[key];
     if (!isFalsy(value)) {
-      // @ts-ignore
       delete result[key];
     }
   });
@@ -19,7 +22,7 @@ export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-} 
+};
 //泛形的应用
 export const useDebounce = <v>(value: v, delay?: number) => {
   // 这是一个内部得变量进入这个函数不会马上更新debouncedValue得值；
@@ -59,12 +62,6 @@ export const useDebounce = <v>(value: v, delay?: number) => {
 //         setValue([])
 //       }
 //     }
-
-
-
-  
-
-
 
 // };
 

@@ -15,11 +15,14 @@ export const handleUserResponse = ({user}:{user:User})=>{
 }
 export const login =( data:{username:string,password:string} )=>{
 return http('login',{data:data,token:getToken(),method:'POST'}).then(async (response) => {
-            if (response) {
-              return  handleUserResponse( response)
-            }else{
 
-               return Promise.reject(data)
+            if (response) {
+
+              console.log( response,"response")
+              return  handleUserResponse(await response)
+            }else{
+               return Promise.reject(await response)
+
             }
         })
 }
@@ -35,8 +38,7 @@ export const register =( data:{username:string,password:string} )=>{
         if (response.ok) {
           return  handleUserResponse(await response.json())
         }else{
-            alert("a")
-            return Promise.reject(data)
+            return Promise.reject(await response.json())
          }
     })
 }

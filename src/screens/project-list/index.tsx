@@ -1,40 +1,35 @@
-import { useEffect, useState } from "react"
-import { List } from "./list"
-import { SearchPanel } from "screens/project-list/search-panel"
-import {cleanObject} from "utils/index";
-import {useMount} from "utils/index";
-import {useDebounce} from "utils/index";
-import { useHttp } from "utils/http";
+import { useState } from "react";
+import { List } from "./list";
+import { SearchPanel } from "screens/project-list/search-panel";
+import { useDebounce } from "utils/index";
 import styled from "@emotion/styled";
-
-
+import { Typography } from "antd";
+import { useProjects } from "utils/project";
+import { useUsers } from "utils/user";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
-    const [users, setUsers] = useState([]) //引入hook use
-    const [param, setParam] = useState({
-        name: '',
-        personId: ''
-    })
-    const debouncedParam = useDebounce(param,2000)
+  const [param, setParam] = useState({
+    name: "",
+    personId: "",
+  });
+  const debouncedParam = useDebounce(param, 200);
 
-    const [list, setList] = useState([])
-    const client = useHttp()
-    useEffect(() => {
-        console.log(cleanObject(debouncedParam),"3");
-        client('projects',{data:cleanObject(debouncedParam)}).then(setList)
-    }, [debouncedParam])// eslint-disable-line react-hooks/exhaustive-deps
-    //页面加载完渲染
-    useMount(() => {
-        client('users').then(setUsers)
-        })
-    return <Container>
-        <h1>项目列表</h1>
-        <SearchPanel users={users} param={param} setParam={setParam} />
-        <List list={list} users={users} />
+  const { isLoading, error, data: list } = useProjects(debouncedParam);
+  //页面加载完渲染
+  const { data: users } = useUsers();
+  return (
+    <Container>
+      <h1>项目列表</h1>
+      <SearchPanel users={users || []} param={param} setParam={setParam} />
+      {error ? (
+        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+      ) : null}
+      <List loading={isLoading} dataSource={list || []} users={users || []} />
     </Container>
-}
+  );
+};
 
 const Container = styled.div`
-    padding: 3.2rem;
-`
+  padding: 3.2rem;
+`;

@@ -37,6 +37,7 @@ export const http = async (
       if(response.ok){
           return data;
       } else{
+        console.log(data,"data")
           return Promise.reject(data)
       } 
     });

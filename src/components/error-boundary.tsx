@@ -3,6 +3,7 @@ import React from "react";
 type fallbackRender = (props:{error:Error|null})=>React.ReactElement
 
 // export class ErrorBoundary extends React.Component<{children:ReactNode,fallbackRender:fallbackRender}> {}
+//https://github.com/bvaughn/react-error-boundary 错误边界插件地址
 export class ErrorBoundary extends React.Component<React.PropsWithChildren<{fallbackRender:fallbackRender}>,{error:Error|null} > {
 
     state = {error :null}

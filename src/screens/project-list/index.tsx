@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { List } from "./list";
 import { SearchPanel } from "screens/project-list/search-panel";
-import { useDebounce } from "utils/index";
+import { useDebounce, useDocumentTitle } from "utils/index";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
@@ -18,6 +18,9 @@ export const ProjectListScreen = () => {
   const { isLoading, error, data: list } = useProjects(debouncedParam);
   //页面加载完渲染
   const { data: users } = useUsers();
+
+  useDocumentTitle('项目列表',false)
+  // react-helmet插件可以解决title动态变换的问题
   return (
     <Container>
       

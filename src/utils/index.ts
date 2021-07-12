@@ -39,6 +39,26 @@ export const useDebounce = <v>(value: v, delay?: number) => {
   return debouncedValue;
 };
 
+
+export const useDocumentTitle = (title:string,keepOnUnmount:boolean= true) =>{
+    const Title = title;
+    const oldTitle = document.title;
+    useEffect(()=>{
+      document.title = Title;
+    },[Title,oldTitle,keepOnUnmount])
+  
+    useEffect(()=>{
+        return ()=>{
+          if(!keepOnUnmount)
+          {
+            
+            document.title = oldTitle
+          }
+        }
+        // eslint-disable-next-line
+    },[])
+}
+
 // interface valueData {
 //   value:[]
 

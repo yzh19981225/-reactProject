@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 //判断是否为空
 export const isFalsy = (value: unknown): boolean => {
   return value === 0 ? true : !!value;
@@ -42,10 +42,11 @@ export const useDebounce = <v>(value: v, delay?: number) => {
 
 export const useDocumentTitle = (title:string,keepOnUnmount:boolean= true) =>{
     const Title = title;
-    const oldTitle = document.title;
+    //useRef可以保留第一次初始化的值而不受值的变化影响
+    const oldTitle = useRef(document.title).current;
     useEffect(()=>{
-      document.title = Title;
-    },[Title,oldTitle,keepOnUnmount])
+      document.title  = Title;
+    },[Title])
   
     useEffect(()=>{
         return ()=>{
@@ -56,7 +57,12 @@ export const useDocumentTitle = (title:string,keepOnUnmount:boolean= true) =>{
           }
         }
         // eslint-disable-next-line
-    },[])
+    },[oldTitle,keepOnUnmount])
+}
+
+
+export const resetRoute = ()=>{
+  window.location.href = window.location.origin;
 }
 
 // interface valueData {

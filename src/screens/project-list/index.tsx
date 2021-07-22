@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { List } from "./list";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { useDebounce, useDocumentTitle } from "utils/index";
@@ -6,24 +5,23 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
+import { useUrlQueryParam } from "utils/url";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
-  const debouncedParam = useDebounce(param, 200);
 
+  // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
+
+  const [param,setParam] = useUrlQueryParam(["name", "personId"]);
+  const debouncedParam = useDebounce(param, 200);
   const { isLoading, error, data: list } = useProjects(debouncedParam);
   //页面加载完渲染
   const { data: users } = useUsers();
-
-  useDocumentTitle('项目列表',false)
+  useDocumentTitle("项目列表", false);
+  // useUrlQueryParam(keys);
   // react-helmet插件可以解决title动态变换的问题
   return (
     <Container>
-      
       <h1>项目列表</h1>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
@@ -33,6 +31,7 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
+ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem;

@@ -5,19 +5,17 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
-import { useUrlQueryParam } from "utils/url";
+import { useProjectsSearchParams } from "./utils";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
+  useDocumentTitle("项目列表", false);
 
   // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
-
-  const [param,setParam] = useUrlQueryParam(["name", "personId"]);
-  const debouncedParam = useDebounce(param, 200);
-  const { isLoading, error, data: list } = useProjects(debouncedParam);
+  const [param,setParam] = useProjectsSearchParams()
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
   //页面加载完渲染
   const { data: users } = useUsers();
-  useDocumentTitle("项目列表", false);
   // useUrlQueryParam(keys);
   // react-helmet插件可以解决title动态变换的问题
   return (

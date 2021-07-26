@@ -13,7 +13,7 @@ export const ProjectListScreen = () => {
 
   // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param,setParam] = useProjectsSearchParams()
-  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
+  const { isLoading, error, data: list,retry } = useProjects(useDebounce(param, 200));
   //页面加载完渲染
   const { data: users } = useUsers();
   // useUrlQueryParam(keys);
@@ -25,7 +25,7 @@ export const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <List refresh={retry} loading={isLoading} dataSource={list || []} users={users || []} />
     </Container>
   );
 };

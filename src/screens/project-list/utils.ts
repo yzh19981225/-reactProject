@@ -11,3 +11,4 @@ export const useProjectsSearchParams = () => {
     setParam,
   ] as const;
 };
+

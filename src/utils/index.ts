@@ -65,6 +65,20 @@ export const resetRoute = ()=>{
   window.location.href = window.location.origin;
 }
 
+/**
+ * 返回组件是否挂载
+ */
+export const useMountedRef = ()=>{
+  const mountedRef = useRef(false);
+  useEffect(()=>{
+    mountedRef.current = true;
+    return ()=>{
+      mountedRef.current = false;
+    }
+  })
+  return mountedRef;  
+}
+
 // interface valueData {
 //   value:[]
 

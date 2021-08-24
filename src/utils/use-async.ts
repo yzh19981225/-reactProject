@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useReducer } from "react";
 import { useMountedRef } from "utils";
 
 interface State<D> {
@@ -10,48 +10,73 @@ interface State<D> {
 const defaultInitialState: State<null> = {
   stat: "idle",
   error: null,
-  data: null, 
+  data: null,
 };
 const defaultConfig = {
   throwOnError: false,
 };
+
+const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+  const mountedRef = useMountedRef();
+  return useCallback(
+    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
+    [dispatch, mountedRef]
+  );
+};
+
 export const useAsync = <D>(
   initialState?: State<D>,
   initialConfig?: typeof defaultConfig
 ) => {
   const config = { ...defaultConfig, ...initialConfig };
-  const [state, setState] = useState<State<D>>({
-    ...defaultInitialState,
-    ...initialState,
-  });
 
-  const mountedRef = useMountedRef();
+  const [state, dispatch] = useReducer(
+    (state: State<D>, action: Partial<State<D>>) => {
+      console.log(state, action, "useReducer");
+      return { ...state, ...action };
+    },
 
-  const setData = useCallback((data: D) => {
-    setState({
-      data,
-      error: null,
-      stat: "success",
-    });
-  },[])
+    {
+      ...defaultInitialState,
+      ...initialState,
+    }
+  );
 
-  const setError = useCallback((error: Error) => {
-    setState({
-      error,
-      data: null,
-      stat: "error",
-    });
-  },[])
+  // const [state, setState] = useState<State<D>>({
+  //   ...defaultInitialState,
+  //   ...initialState,
+  // });
+
+  const safeDispatch = useSafeDispatch(dispatch);
+
+  const setData = useCallback(
+    (data: D) => {
+      safeDispatch({
+        data,
+        error: null,
+        stat: "success",
+      });
+    },
+    [safeDispatch]
+  );
+
+  const setError = useCallback(
+    (error: Error) => {
+      safeDispatch({
+        error,
+        data: null,
+        stat: "error",
+      });
+    },
+    [safeDispatch]
+  );
   const [retry, setRetry] = useState(() => {
     return () => {};
   });
 
   //run触发异步请求
   const run = useCallback(
-    (
-      promise: Promise<D>,
-      runConfig?: { retry: () => Promise<D> }
-    ) => {
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
       if (!promise || !promise.then()) {
         throw new Error("请传入Promise类型数据");
       }
@@ -60,13 +85,11 @@ export const useAsync = <D>(
           run(runConfig?.retry(), runConfig);
         }
       });
-      setState(prevState=>({ ...prevState, stat: "loading" }));
+      safeDispatch({ stat: "loading" });
       return promise
         .then((data) => {
-          if (mountedRef.current) {
-            setData(data);
-            return data;
-          }
+          setData(data);
+          return data;
         })
         .catch((error) => {
           console.log(config.throwOnError, "error");
@@ -77,7 +100,8 @@ export const useAsync = <D>(
           return error;
         });
     },
-    [config.throwOnError,mountedRef,setData,setError])
+    [config.throwOnError, setData, setError, safeDispatch]
+  );
 
   return {
     isIdle: state.stat === "idle",

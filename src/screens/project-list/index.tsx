@@ -6,10 +6,12 @@ import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectsSearchParams } from "./utils";
-import { Row } from "components/lib";
+import { ButtonNoPadding, Row } from "components/lib";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "./project-list-slice";
 
 // const apiUrl = process.env.REACT_APP_API_URL
-export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
 
   // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
@@ -22,21 +24,21 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   } = useProjects(useDebounce(param, 200));
   //页面加载完渲染
   const { data: users } = useUsers();
+  const dispatch =useDispatch()
+
   // useUrlQueryParam(keys);
   // react-helmet插件可以解决title动态变换的问题
   return (
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+       <ButtonNoPadding onClick={()=> dispatch(projectListActions.openProjectModal())} type={'link'}>创建项目</ButtonNoPadding>
       </Row>
-
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-      projectButton={props.projectButton}
         refresh={retry}
         loading={isLoading}
         dataSource={list || []}

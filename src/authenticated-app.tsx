@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ButtonNoPadding, Row } from "components/lib";
+import {  Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
@@ -9,56 +9,37 @@ import { ProjectScreen } from "screens/project/index";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Aspan } from "unauthenticated-app";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 export const AnthenticatedApp = () => {
-  const [projectModalOpen, setprojectModalOpen] = useState(false);
   return (
     <Container>
-      <PageHeader 
-        projectButton={
-          <ButtonNoPadding 
-            onClick={() =>setprojectModalOpen(true)} type={'link'}
-          >
-            创建项目
-          </ButtonNoPadding>
-        }
-      />
-      <Main>
-        <Router>
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen   projectButton={
-          <ButtonNoPadding 
-            onClick={() =>setprojectModalOpen(true)} type={'link'}
-          >
-            创建项目
-          </ButtonNoPadding>
-        } />} />
+            <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
               path={"/projects/:projectId/*"}
-              element={<ProjectScreen  />}
+              element={<ProjectScreen />}
             />
             <Navigate to={"/projects"} />
           </Routes>
-        </Router>
-      </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setprojectModalOpen(false)}
-      />
+        </Main>
+        <ProjectModal />
+      </Router>
     </Container>
   );
 };
 
-const PageHeader = (props:{projectButton:JSX.Element}) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <Button style={{padding:0}} type={"link"} onClick={resetRoute}>
+        <Button style={{ padding: 0 }} type={"link"} onClick={resetRoute}>
           <SoftwareLogo width={"18rem"} color={"rgba(38,132,255)"} />
         </Button>
-        <ProjectPopover {...props}/>
+        <ProjectPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

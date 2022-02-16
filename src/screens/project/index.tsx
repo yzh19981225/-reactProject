@@ -1,6 +1,6 @@
 import React from "react";
 import { Link} from "react-router-dom";
-import { Routes,Route, Navigate } from "react-router";
+import { Routes,Route } from "react-router";
 import { EpicScreen } from "screens/epic";
 import { KanbanScreen } from "screens/kanban";
 export const ProjectScreen = () => {
@@ -12,8 +12,9 @@ export const ProjectScreen = () => {
       <Routes>
           <Route path={'/kanban'} element={<KanbanScreen/>}></Route>
           <Route path={'/epic'} element={<EpicScreen/>}></Route>
-          <Navigate to={window.location.pathname+'/kanban'}></Navigate>
+          <Route index element={<KanbanScreen />} />
       </Routes>
+          {/* <Navigate to={window.location.pathname+'/kanban'}></Navigate> */}
     </div>
   );
 };

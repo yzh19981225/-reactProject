@@ -20,14 +20,13 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh?:()=>void;
   // projectButton:JSX.Element
 }
 
 export const List = ({ users,...props }: ListProps) => {
   const {open} = useProjectModal()
   const {mutate}= useEditProjects();
-  const pinProject = (id:number)=> (pin:boolean)=>mutate({id,pin}).then( props.refresh)
+  const pinProject = (id:number)=> (pin:boolean)=>mutate({id,pin})
   return (
     <Table  
       rowKey={"id"}
@@ -42,7 +41,8 @@ export const List = ({ users,...props }: ListProps) => {
         {
           title: "名称",
           render(value,project){
-            return (<Link to={String(project.id)}>{project.name}</Link>)
+            console.log(project.id,"ids")
+            return (<Link to={`projects/${String(project.id)}`}>{project.name}</Link>)
           },
           sorter:(a,b)=>a.name.localeCompare(b.name),
          

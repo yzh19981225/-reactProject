@@ -2,11 +2,10 @@ import { List } from "./list";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { useDebounce, useDocumentTitle } from "utils/index";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectModal, useProjectsSearchParams } from "./utils";
-import { ButtonNoPadding, Row } from "components/lib";
+import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
@@ -18,7 +17,6 @@ const {open}= useProjectModal()
     isLoading,
     error,
     data: list,
-    retry,
   } = useProjects(useDebounce(param, 200));
   //页面加载完渲染
   const { data: users } = useUsers();
@@ -36,11 +34,8 @@ const {open}= useProjectModal()
       </Row>
 
       <SearchPanel users={users || []} param={param} setParam={setParam} />
-      {error ? (
-        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-      ) : null}
+      <ErrorBox error={error}/>
       <List
-        refresh={retry}
         loading={isLoading}
         dataSource={list || []}
         users={users || []}

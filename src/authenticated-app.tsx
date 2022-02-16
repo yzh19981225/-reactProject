@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import {  Row } from "components/lib";
+import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
-import { Navigate, Route, Routes } from "react-router";
+import { Route, Routes } from "react-router";
 import { ProjectScreen } from "screens/project/index";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Aspan } from "unauthenticated-app";
@@ -23,7 +23,7 @@ export const AnthenticatedApp = () => {
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
-            <Navigate to={"/projects"} />
+           <Route index element={<ProjectListScreen />} />
           </Routes>
         </Main>
         <ProjectModal />
